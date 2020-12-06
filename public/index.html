@@ -35,7 +35,7 @@
 
       // 4. The API will call this function when the video player is ready.
       function onPlayerReady(event) {
-        event.target.playVideo();
+        // console.log();
       }
 
       // 5. The API calls this function when the player's state changes.
@@ -59,7 +59,7 @@
         video_playing = true;
       }
     </script>
-    <button onclick="if (video_playing) {pauseVideo()} else {playVideo()}">Toggle video</button>
+    <!-- <button onclick="if (video_playing) {pauseVideo()} else {playVideo()}">Toggle video</button> -->
     <div id='root'></div>
     <script src='vs/loader.js'></script>
     <script src='vs/editor/editor.main.nls.js'></script>

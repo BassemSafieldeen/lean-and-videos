@@ -238,6 +238,19 @@ export function registerLeanLanguage(leanJsOpts: lean.LeanJsOpts) {
 
   server.allMessages.on((allMsgs) => {
     allMessages = allMsgs.msgs;
+    for (var msg of allMessages) {
+      console.log(msg.text);
+    }
+    if (allMessages.length == 0) {
+      console.log("goals accomplished");
+      // continue playing video and set timeout to pause it at next mark.
+      if (window.hasOwnProperty('playVideo')) {
+        window['playVideo'].call();
+    }
+      // Note: assign a mark (timestamp) to each theorem, if possible; And 
+      // when the goals of the theorem are accomplished play the next the 
+      // next segment of the video.
+    }
     for (const model of monaco.editor.getModels()) {
       const fn = model.uri.fsPath;
       const markers: monaco.editor.IMarkerData[] = [];
