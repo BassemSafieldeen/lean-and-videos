@@ -740,13 +740,15 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
 }
 
 const defaultValue =
-`-- Live ${(self as any).WebAssembly ? 'WebAssembly' : 'JavaScript'} version of Lean
-#eval let v := lean.version in let s := lean.special_version_desc in string.join
-["Lean (version ", v.1.repr, ".", v.2.1.repr, ".", v.2.2.repr, ", ",
-if s ≠ "" then s ++ ", " else s, "commit ", (lean.githash.to_list.take 12).as_string, ")"]
+`import analysis.special_functions.exp_log
 
-example (m n : ℕ) : m + n = n + m :=
-by simp [nat.add_comm]`;
+open real
+
+example : ∀ r>0, exp(log(r)) = r := 
+begin
+  intros,
+  -- exact exp_log H,
+end`;
 
 interface HashParams {
   url: string;
