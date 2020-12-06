@@ -4,7 +4,8 @@
   "description": "Lean Web Editor",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "build": "webpack-dev-server"
   },
   "author": "Gabriel Ebner",
   "license": "Apache-2.0",
