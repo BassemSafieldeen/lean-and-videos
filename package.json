@@ -4,6 +4,7 @@
   "description": "Lean Web Editor",
   "main": "index.js",
   "scripts": {
+    "start": "webpack",
     "build": "webpack"
   },
   "author": "Gabriel Ebner",
