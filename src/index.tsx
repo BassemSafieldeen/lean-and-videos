@@ -282,9 +282,9 @@ class PageHeader extends React.Component<PageHeaderProps, PageHeaderState> {
           <div className='headerForms'>
             <UrlForm url={this.props.url} onSubmit={this.props.onSubmit}
             clearUrlParam={this.props.clearUrlParam}/>
-            <div style={{float: 'right', margin: '1em'}}>
+            {/* <div style={{float: 'right', margin: '1em'}}>
               <button onClick={this.props.onSave}>Save</button>
-              {/* <button onClick={this.restart}>Restart server:<br/>will redownload<br/>library.zip!</button> */}
+              <button onClick={this.restart}>Restart server:<br/>will redownload<br/>library.zip!</button>
             </div>
             <label className='logo' htmlFor='lean_upload'>Load .lean from disk:&nbsp;</label>
             <input id='lean_upload' type='file' accept='.lean' onChange={this.onFile}/>
@@ -294,7 +294,7 @@ class PageHeader extends React.Component<PageHeaderProps, PageHeaderState> {
               <a href='https://leanprover.github.io/'>Lean theorem prover
               </a>
               <span className='logo'>.</span>
-            </div>
+            </div> */}
             {this.props.status &&
               (<span style={{color: 'red'}}>
                 Could not fetch (error: {this.props.status})!&nbsp;
@@ -341,13 +341,13 @@ class UrlForm extends React.Component<UrlFormProps, UrlFormState> {
   }
 
   render() {
-    return (
-      <div className='urlForm'>
-      <form onSubmit={this.handleSubmit}>
-        <span className='url'>Load .lean from&nbsp;</span>
-        URL:&nbsp;<input type='text' value={this.state.value} onChange={this.handleChange}/>
-        <input type='submit' value='Load' />
-      </form></div>
+    return (""
+      // <div className='urlForm'>
+      // <form onSubmit={this.handleSubmit}>
+      //   <span className='url'>Load .lean from&nbsp;</span>
+      //   URL:&nbsp;<input type='text' value={this.state.value} onChange={this.handleChange}/>
+      //   <input type='submit' value='Load' />
+      // </form></div>
     );
   }
 }
