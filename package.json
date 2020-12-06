@@ -4,6 +4,7 @@
   "description": "Lean Web Editor",
   "main": "index.js",
   "scripts": {
+    "heroku-prebuild": "npm install --dev",
     "start": "./node_modules/.bin/webpack",
     "build": "./node_modules/.bin/webpack"
   },
