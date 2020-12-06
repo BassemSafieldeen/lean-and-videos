@@ -1,7 +1,8 @@
 [package]
 name = "combined_lib"
-version = "3.15.0"
-lean_version = "leanprover-community/lean:3.15.0"
+version = "3.23.0"
+lean_version = "leanprover-community/lean:3.23.0"
 
 [dependencies]
-mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "79e296bdc9f83b9447dc1b81730d36f63a99f72d"}
+mathlib = {git = "https://github.com/leanprover-community/mathlib", rev = "f1531ea563eafef8e363e92b27416a0d2ebd6e72"}
+Shannon-theory = {git = "https://github.com/BassemSafieldeen/Shannon-theory", rev = "b90561207dbc04d1896c1db0f74abbd11899a4da"}
