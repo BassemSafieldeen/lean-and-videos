@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server",
     "start": "node server.js",
+    "heroku-prebuild": "",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack"
   },
   "author": "Gabriel Ebner",
