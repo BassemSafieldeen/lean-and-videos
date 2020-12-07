@@ -265,6 +265,10 @@ class PageHeader extends React.Component<PageHeaderProps, PageHeaderState> {
 
   render() {
     const isRunning = this.state.currentlyRunning ? 'busy...' : 'ready!';
+    if (!this.state.currentlyRunning) {
+      var loadingScreen = document.getElementById("loadingScreen");
+      loadingScreen.style.display = "none";
+    }
     const runColor = this.state.currentlyRunning ? 'orange' : 'lightgreen';
     // TODO: add input for delayMs
     // checkbox for console spam
