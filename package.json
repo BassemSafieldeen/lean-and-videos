@@ -8,10 +8,7 @@
     "npm": ">=3"
   },
   "scripts": {
-    "dev": "./node_modules/.bin/webpack-dev-server",
     "start": "./node_modules/.bin/http-server ./dist/",
-    "heroku-prebuild": "",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack"
   },
   "author": "Gabriel Ebner",
   "license": "Apache-2.0",
