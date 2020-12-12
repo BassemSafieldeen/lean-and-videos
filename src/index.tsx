@@ -751,6 +751,7 @@ open real
 example : ∀ r>0, exp(log(r)) = r := 
 begin
   intros,
+  -- Finish the proof to unlock the video:
   -- exact exp_log H,
 end`;
 
