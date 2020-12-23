@@ -42,6 +42,7 @@ interface GoalWidgetProps {
   position: Position;
 }
 function GoalWidget({goal, position}: GoalWidgetProps) {
+  console.log("goal.state: ", goal.state, " goal.text: ", goal.text); // play video here when goal.state = no goals?
   const tacticHeader = goal.text && <div className='info-header doc-header'>
     {position.line}:{position.column}: tactic {
       <span className='code-block' style={{fontWeight: 'normal', display: 'inline'}}>{goal.text}</span>}</div>;
@@ -168,6 +169,7 @@ class InfoView extends React.Component<InfoViewProps, InfoViewState> {
   }
 
   render() {
+    console.log("this.state.goal: ", this.state.goal);
     const goal = (this.state.displayMode === DisplayMode.OnlyState) &&
       this.state.goal &&
       (<div key={'goal'}>{GoalWidget(this.state.goal)}</div>);
@@ -211,6 +213,7 @@ interface PageHeaderProps {
   status: string;
   onSave: () => void;
   onLoad: (localFile: string, lastFileName: string) => void;
+  nextTheorem: () => void;
   clearUrlParam: () => void;
   onChecked: () => void;
 }
@@ -286,9 +289,10 @@ class PageHeader extends React.Component<PageHeaderProps, PageHeaderState> {
           <div className='headerForms'>
             <UrlForm url={this.props.url} onSubmit={this.props.onSubmit}
             clearUrlParam={this.props.clearUrlParam}/>
-            {/* <div style={{float: 'right', margin: '1em'}}>
+            <div style={{float: 'right', margin: '1em'}}>
               <button onClick={this.props.onSave}>Save</button>
-              <button onClick={this.restart}>Restart server:<br/>will redownload<br/>library.zip!</button>
+              <button id="nextTheoremButton" onClick={this.props.nextTheorem}>Next Theorem</button>
+              {/* <button onClick={this.restart}>Restart server:<br/>will redownload<br/>library.zip!</button> */}
             </div>
             <label className='logo' htmlFor='lean_upload'>Load .lean from disk:&nbsp;</label>
             <input id='lean_upload' type='file' accept='.lean' onChange={this.onFile}/>
@@ -298,7 +302,7 @@ class PageHeader extends React.Component<PageHeaderProps, PageHeaderState> {
               <a href='https://leanprover.github.io/'>Lean theorem prover
               </a>
               <span className='logo'>.</span>
-            </div> */}
+            </div>
             {this.props.status &&
               (<span style={{color: 'red'}}>
                 Could not fetch (error: {this.props.status})!&nbsp;
@@ -599,7 +603,6 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
     this.model.onDidChangeContent((e) => {
       checkInputCompletionChange(e, this.editor, this.model);
       const val = this.model.getValue();
-
       // do not change code URL param unless user has actually typed
       // (this makes the #url=... param a little more "sticky")
       return (!e.isFlush || !val) && this.props.onValueChange &&
@@ -611,6 +614,7 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
     this.onSubmit = this.onSubmit.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onLoad = this.onLoad.bind(this);
+    this.nextTheorem = this.nextTheorem.bind(this);
     this.onChecked = this.onChecked.bind(this);
   }
   componentDidMount() {
@@ -689,7 +693,7 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
     this.setState({ url: value, lastFileName });
   }
 
-  onSave() {
+  onSave() {  // The save signal was passed from the outside via the save button. Use the same method to pass a nextTheorem signal from the outside.
     const file = new Blob([this.model.getValue()], { type: 'text/plain' });
     const a = document.createElement('a');
     const url = URL.createObjectURL(file);
@@ -702,10 +706,18 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
       window.URL.revokeObjectURL(url);
     }, 0);
   }
+
   onLoad(fileStr, lastFileName) {
     this.model.setValue(fileStr);
     this.props.clearUrlParam();
     this.setState({ lastFileName });
+  }
+
+  nextTheorem() {  // The save signal was passed from the outside via the save button. Use the same method to pass a nextTheorem signal from the outside.
+    if (theoremsList.length > 0) {
+      let nextValue = theoremsList.shift();
+      this.model.setValue(this.model.getValue() + fillerSpace + nextValue);
+    }
   }
 
   onChecked() {
@@ -728,7 +740,7 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
       <div className='headerContainer'>
         <PageHeader file={this.props.file} url={this.props.initialUrl}
         onSubmit={this.onSubmit} clearUrlParam={this.props.clearUrlParam} status={this.state.status}
-        onSave={this.onSave} onLoad={this.onLoad} onChecked={this.onChecked}/>
+        onSave={this.onSave} onLoad={this.onLoad} nextTheorem={this.nextTheorem} onChecked={this.onChecked}/>
       </div>
       <div className='editorContainer' ref='root'>
         <SplitPane split={this.state.split} defaultSize='60%' allowResize={true}
@@ -743,7 +755,12 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
   }
 }
 
-const defaultValue =
+const fillerSpace : string = 
+`
+
+`;
+
+const theorem1 : string =
 `import analysis.special_functions.exp_log
 
 open real
@@ -755,6 +772,20 @@ begin
   -- exact exp_log H,
 end`;
 
+const theorem2 : string =
+`example : 1=1 := 
+begin
+  -- refl,
+end`;
+
+const theorem3 : string =
+`example : 2=2 := 
+begin
+  -- refl,
+end`;
+
+let theoremsList = [theorem2, theorem3];
+
 interface HashParams {
   url: string;
   code: string;
@@ -764,7 +795,7 @@ function parseHash(hash: string): HashParams {
   const hashObj = hash.split('&').map((s) => s.split('='))
     .reduce( (pre, [key, value]) => ({ ...pre, [key]: value }), {} ) as any;
   const url = decodeURIComponent(hashObj.url || '');
-  const code = decodeURIComponent(hashObj.code || defaultValue);
+  const code = decodeURIComponent(hashObj.code || theorem1);
   return { url, code };
 }
 function paramsToString(params: HashParams): string {
@@ -818,10 +849,17 @@ function App() {
   }
 
   return (
-    <LeanEditor file={fn} initialValue={params.code} onValueChange={(newValue) => changeUrl(newValue, 'code')}
-    initialUrl={params.url} onUrlChange={(newValue) => changeUrl(newValue, 'url')}
-    clearUrlParam={clearUrlParam} />
-  );
+    <LeanEditor 
+    file={fn} 
+    initialValue={params.code} 
+    onValueChange={(newValue) => {
+      changeUrl(newValue, 'code');
+    }}
+    initialUrl={params.url} 
+    onUrlChange={(newValue) => changeUrl(newValue, 'url')}
+    clearUrlParam={clearUrlParam} 
+    />
+  );;
 }
 
 // const hostPrefix = process.env.COMMUNITY ? 'https://cdn.jsdelivr.net/gh/bryangingechen/lean-web-editor-dist/' : './';

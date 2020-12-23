@@ -65,6 +65,10 @@
         player.playVideo();
         video_playing = true;
       }
+      function getCurrentTime() {
+        // return the current time of the video.
+        return player.getCurrentTime();
+      }
     </script>
     <!-- <button onclick="if (video_playing) {pauseVideo()} else {playVideo()}">Toggle video</button> -->
     <div id='root'></div>

@@ -136,7 +136,7 @@ function completionEdit(editor: monaco.editor.IStandaloneCodeEditor,
       editor.executeEdits(null, [{
         identifier: {major: 1, minor: 1},
         range: range1,
-        text: replaceText || hackyReplacement[0],
+        text: replaceText + "0" || hackyReplacement[0],
         forceMoveMarkers: false,
       }], [new monaco.Selection(lineNum, index + 1, lineNum, index + 1)]);
       if (hackyReplacement) {
@@ -217,6 +217,8 @@ export function registerLeanLanguage(leanJsOpts: lean.LeanJsOpts) {
   server.connect();
   // server.logMessagesToConsole = true;
   server.logMessagesToConsole = window.localStorage.getItem('logging') === 'true';
+  let theoremTimesList = [15, 56, 105]; // this is related to theoremsList in index.tsx.
+  let nextTheoremTime = theoremTimesList.shift();
 
   monaco.languages.register({
     id: 'lean',
@@ -239,14 +241,28 @@ export function registerLeanLanguage(leanJsOpts: lean.LeanJsOpts) {
   server.allMessages.on((allMsgs) => {
     allMessages = allMsgs.msgs;
     for (var msg of allMessages) {
-      console.log(msg.text);
+      console.log("msg.text: ", msg.text);
     }
-    if (allMessages.length == 0) {
+    if (allMessages.length == 0) {  // This condition is wrong: It's also true when a space is typed sometimes.
       console.log("goals accomplished");
       // continue playing video and set timeout to pause it at next mark.
-      if (window.hasOwnProperty('playVideo')) {
+      if (window.hasOwnProperty('playVideo')) { // play video and set timer to pause. Get timestamp and theorem from the story file.
         window['playVideo'].call();
-    }
+        let pauseInterval = setInterval( ()=>{
+          let currentTime = window['getCurrentTime'].call();
+          if (currentTime > nextTheoremTime && theoremTimesList.length > 0) {
+            console.log("currentTime := ", currentTime);
+            console.log('pausing video');
+            window['pauseVideo'].call();
+            // Show next theorem to be proven
+            document.getElementById("nextTheoremButton").click();
+            // Prepare the nextTheoremTime
+            nextTheoremTime = theoremTimesList.shift();
+            // Clear the interval
+            clearInterval(pauseInterval); // should we keep this?
+          }
+        }, 100);
+      }
       // Note: assign a mark (timestamp) to each theorem, if possible; And 
       // when the goals of the theorem are accomplished play the next the 
       // next segment of the video.
