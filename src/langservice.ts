@@ -217,7 +217,7 @@ export function registerLeanLanguage(leanJsOpts: lean.LeanJsOpts) {
   server.connect();
   // server.logMessagesToConsole = true;
   server.logMessagesToConsole = window.localStorage.getItem('logging') === 'true';
-  let theoremTimesList = [15, 56, 105]; // this is related to theoremsList in index.tsx.
+  let theoremTimesList = [93]; // this is related to theoremsList in index.tsx.
   let nextTheoremTime = theoremTimesList.shift();
 
   monaco.languages.register({
@@ -245,24 +245,32 @@ export function registerLeanLanguage(leanJsOpts: lean.LeanJsOpts) {
     }
     if (allMessages.length == 0) {  // This condition is wrong: It's also true when a space is typed sometimes.
       console.log("goals accomplished");
+      // let skipFlag = 0;
       // continue playing video and set timeout to pause it at next mark.
-      if (window.hasOwnProperty('playVideo')) { // play video and set timer to pause. Get timestamp and theorem from the story file.
-        window['playVideo'].call();
-        let pauseInterval = setInterval( ()=>{
-          let currentTime = window['getCurrentTime'].call();
-          if (currentTime > nextTheoremTime && theoremTimesList.length > 0) {
-            console.log("currentTime := ", currentTime);
-            console.log('pausing video');
-            window['pauseVideo'].call();
-            // Show next theorem to be proven
-            document.getElementById("nextTheoremButton").click();
-            // Prepare the nextTheoremTime
-            nextTheoremTime = theoremTimesList.shift();
-            // Clear the interval
-            clearInterval(pauseInterval); // should we keep this?
-          }
-        }, 100);
-      }
+      // if (skipFlag == 0) { // play video and set timer to pause. Get timestamp and theorem from the story file.
+      //   if (window.hasOwnProperty('playVideo')) {
+      //     window['playVideo'].call();
+      //     let pauseInterval = setInterval( ()=>{
+      //       let currentTime = window['getCurrentTime'].call();
+      //       if (currentTime > nextTheoremTime && theoremTimesList.length > 0) {
+      //         console.log("currentTime := ", currentTime);
+      //         console.log('pausing video');
+      //         window['pauseVideo'].call();
+      //         // Show next theorem to be proven
+      //         document.getElementById("nextTheoremButton").click();
+      //         // Prepare the nextTheoremTime
+      //         nextTheoremTime = theoremTimesList.shift();
+      //         // Clear the interval
+      //         clearInterval(pauseInterval); // should we keep this?
+      //       }
+      //     }, 100);
+      //   }
+      // } else {
+        // if (window.hasOwnProperty('player')) {
+          // window['seekTo'].call(5000);
+      window['player'].seekTo(522, true);
+        // }
+      // }
       // Note: assign a mark (timestamp) to each theorem, if possible; And 
       // when the goals of the theorem are accomplished play the next the 
       // next segment of the video.

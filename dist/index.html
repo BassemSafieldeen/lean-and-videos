@@ -32,7 +32,7 @@
         player = new YT.Player('player', {
           height: '315',
           width: '420',
-          videoId: 'tgbNymZ7vqY',
+          videoId: 'bOjkYfDhY-c',
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -64,6 +64,10 @@
       function playVideo() {
         player.playVideo();
         video_playing = true;
+      }
+      function seekTo(time) {
+        player.seekTo(time, true);
+        // video_playing = true;
       }
       function getCurrentTime() {
         // return the current time of the video.

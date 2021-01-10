@@ -269,8 +269,28 @@ class PageHeader extends React.Component<PageHeaderProps, PageHeaderState> {
   render() {
     const isRunning = this.state.currentlyRunning ? 'busy...' : 'ready!';
     if (!this.state.currentlyRunning) {
+      // remove the loading screen
       var loadingScreen = document.getElementById("loadingScreen");
       loadingScreen.style.display = "none";
+      // play the video
+      // window['playVideo'].call();
+      window['player'].playVideo();
+      // window['player'].seekTo(200, true);
+      // create an interval to show the theorem at the right time.
+      let pauseInterval = setInterval( ()=>{
+        let currentTime = window['getCurrentTime'].call();
+        if (currentTime > 93) {
+          console.log("currentTime := ", currentTime);
+          // console.log('pausing video');
+          // window['pauseVideo'].call();
+          // Show next theorem to be proven
+          document.getElementById("nextTheoremButton").click();
+          // Prepare the nextTheoremTime
+          // nextTheoremTime = theoremTimesList.shift();
+          // Clear the interval
+          clearInterval(pauseInterval); // should we keep this?
+        }
+      }, 100);
     }
     const runColor = this.state.currentlyRunning ? 'orange' : 'lightgreen';
     // TODO: add input for delayMs
@@ -716,7 +736,8 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
   nextTheorem() {  // The save signal was passed from the outside via the save button. Use the same method to pass a nextTheorem signal from the outside.
     if (theoremsList.length > 0) {
       let nextValue = theoremsList.shift();
-      this.model.setValue(this.model.getValue() + fillerSpace + nextValue);
+      // this.model.setValue(this.model.getValue() + fillerSpace + nextValue);
+      this.model.setValue(nextValue);
     }
   }
 
@@ -761,6 +782,17 @@ const fillerSpace : string =
 `;
 
 const theorem1 : string =
+`-- import analysis.special_functions.exp_log
+
+-- open real
+
+-- example : ∀ r>0, exp(log(r)) = r := 
+-- begin
+--   intros,
+  -- exact exp_log H,
+-- end`;
+
+const theorem2 : string =
 `import analysis.special_functions.exp_log
 
 open real
@@ -768,14 +800,8 @@ open real
 example : ∀ r>0, exp(log(r)) = r := 
 begin
   intros,
-  -- Finish the proof to unlock the video:
+  -- Finish the proof to change the scene:
   -- exact exp_log H,
-end`;
-
-const theorem2 : string =
-`example : 1=1 := 
-begin
-  -- refl,
 end`;
 
 const theorem3 : string =
@@ -784,7 +810,8 @@ begin
   -- refl,
 end`;
 
-let theoremsList = [theorem2, theorem3];
+// let theoremsList = [theorem2, theorem3];
+let theoremsList = [theorem2];
 
 interface HashParams {
   url: string;
