@@ -291,6 +291,9 @@ class PageHeader extends React.Component<PageHeaderProps, PageHeaderState> {
           clearInterval(pauseInterval); // should we keep this?
         }
       }, 100);
+    } else {
+      var loadingScreen = document.getElementById("loadingScreen");
+      loadingScreen.style.display = "block";
     }
     const runColor = this.state.currentlyRunning ? 'orange' : 'lightgreen';
     // TODO: add input for delayMs
