@@ -271,6 +271,9 @@ class PageHeader extends React.Component<PageHeaderProps, PageHeaderState> {
     if (!this.state.currentlyRunning) {
       var loadingScreen = document.getElementById("loadingScreen");
       loadingScreen.style.display = "none";
+    } else {
+      var loadingScreen = document.getElementById("loadingScreen");
+      loadingScreen.style.display = "block";
     }
     const runColor = this.state.currentlyRunning ? 'orange' : 'lightgreen';
     // TODO: add input for delayMs
@@ -716,7 +719,8 @@ class LeanEditor extends React.Component<LeanEditorProps, LeanEditorState> {
   nextTheorem() {  // The save signal was passed from the outside via the save button. Use the same method to pass a nextTheorem signal from the outside.
     if (theoremsList.length > 0) {
       let nextValue = theoremsList.shift();
-      this.model.setValue(this.model.getValue() + fillerSpace + nextValue);
+      // this.model.setValue(this.model.getValue() + fillerSpace + nextValue);
+      this.model.setValue(nextValue);
     }
   }
 
@@ -773,13 +777,21 @@ begin
 end`;
 
 const theorem2 : string =
-`example : 1=1 := 
+`import analysis.special_functions.exp_log
+
+open real
+
+example : 1=1 := 
 begin
   -- refl,
 end`;
 
 const theorem3 : string =
-`example : 2=2 := 
+`import analysis.special_functions.exp_log
+
+open real
+
+example : 2=2 := 
 begin
   -- refl,
 end`;
