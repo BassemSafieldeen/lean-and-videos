@@ -785,15 +785,7 @@ const fillerSpace : string =
 `;
 
 const theorem1 : string =
-`-- import analysis.special_functions.exp_log
-
--- open real
-
--- example : ∀ r>0, exp(log(r)) = r := 
--- begin
---   intros,
-  -- exact exp_log H,
--- end`;
+``;
 
 const theorem2 : string =
 `import analysis.special_functions.exp_log
