@@ -14,9 +14,9 @@
             display: block;">  
     </div>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div id="player"></div>
-    <img src="./owl.png" alt="owl" width="200" height="auto" align="right" 
-      style="vertical-align:middle;margin:50px 50px 50px">
+    <!-- <div id="player"></div> -->
+    <!-- <img src="./owl.png" alt="owl" width="200" height="auto" align="right" 
+      style="vertical-align:middle;margin:50px 50px 50px"> -->
     <script>
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
@@ -25,46 +25,46 @@
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      // 3. This function creates an <iframe> (and YouTube player)
-      //    after the API code downloads.
-      var player;
-      function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-          height: '315',
-          width: '420',
-          videoId: 'tgbNymZ7vqY',
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
-      }
+      // // 3. This function creates an <iframe> (and YouTube player)
+      // //    after the API code downloads.
+      // var player;
+      // function onYouTubeIframeAPIReady() {
+      //   player = new YT.Player('player', {
+      //     height: '315',
+      //     width: '420',
+      //     videoId: 'tgbNymZ7vqY',
+      //     events: {
+      //       'onReady': onPlayerReady,
+      //       'onStateChange': onPlayerStateChange
+      //     }
+      //   });
+      // }
 
-      // 4. The API will call this function when the video player is ready.
-      function onPlayerReady(event) {
-        // console.log();
-      }
+      // // 4. The API will call this function when the video player is ready.
+      // function onPlayerReady(event) {
+      //   // console.log();
+      // }
 
-      // 5. The API calls this function when the player's state changes.
-      //    The function indicates that when playing a video (state=1),
-      //    the player should play for six seconds and then stop.
-      // var done = false;
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING) {
-          // setTimeout(stopVideo, 6000);
-          // done = true;
-          console.log();
-        }
-      }
-      var video_playing = true;
-      function pauseVideo() {
-        player.pauseVideo();
-        video_playing = false;
-      }
-      function playVideo() {
-        player.playVideo();
-        video_playing = true;
-      }
+      // // 5. The API calls this function when the player's state changes.
+      // //    The function indicates that when playing a video (state=1),
+      // //    the player should play for six seconds and then stop.
+      // // var done = false;
+      // function onPlayerStateChange(event) {
+      //   if (event.data == YT.PlayerState.PLAYING) {
+      //     // setTimeout(stopVideo, 6000);
+      //     // done = true;
+      //     console.log();
+      //   }
+      // }
+      // var video_playing = true;
+      // function pauseVideo() {
+      //   player.pauseVideo();
+      //   video_playing = false;
+      // }
+      // function playVideo() {
+      //   player.playVideo();
+      //   video_playing = true;
+      // }
     </script>
     <!-- <button onclick="if (video_playing) {pauseVideo()} else {playVideo()}">Toggle video</button> -->
     <div id='root'></div>
